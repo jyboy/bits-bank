@@ -44,3 +44,7 @@ npm start
 ```
 
 > **Note**: Before `npm start`, please confirm configuration in `config.js` first.
+
+## License
+
+[MIT license](https://github.com/jyboy/bits-bank/blob/master/LICENSE)
