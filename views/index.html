@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="robots" content="all">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="jyboy">
+    <title>Bits Bank</title>
+    <link rel="stylesheet" href="//unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            line-height: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-container style="border: 1px solid #eee">
+            <el-aside width="200px" style="background-color: rgb(238, 241, 246); color: #333">
+                <el-menu :default-active="activeIndex" :default-openeds="['1', '2']" @select="handleSelect">
+                    <el-submenu index="1">
+                        <template slot="title"><i class="el-icon-menu"></i>BALANCE</template>
+                        <el-menu-item index="1-1">Register</el-menu-item>
+                        <el-menu-item index="1-2">Balance</el-menu-item>
+                        <el-menu-item index="1-3">Deposit</el-menu-item>
+                        <el-menu-item index="1-4">Withdraw</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="2">
+                        <template slot="title"><i class="el-icon-menu"></i>TRANSFER</template>
+                        <el-menu-item index="2-1">Transfer</el-menu-item>
+                        <el-menu-item index="2-2">History</el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+            <el-container v-show="activeIndex === '1-1'">
+                <el-header>
+                    <span>Register</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="register_form" :model="register_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="register_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="password">
+                            <el-input v-model="register_form.password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitRegister">Register</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+            <el-container v-show="activeIndex === '1-2'">
+                <el-header>
+                    <span>Balance</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="balance_form" :model="balance_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="balance_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="password">
+                            <el-input v-model="balance_form.password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitBalance">Confirm</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <el-form label-width="80px">
+                        <el-form-item label="balance">
+                            <el-input v-model="balance" readonly></el-input>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+            <el-container v-show="activeIndex === '1-3'">
+                <el-header>
+                    <span>Deposit</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="deposit_form" :model="deposit_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="deposit_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="amount">
+                            <el-input v-model="deposit_form.amount" type="number"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitDeposit">Deposit</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+            <el-container v-show="activeIndex === '1-4'">
+                <el-header>
+                    <span>Withdraw</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="withdraw_form" :model="withdraw_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="withdraw_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="password">
+                            <el-input v-model="withdraw_form.password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item label="amount">
+                            <el-input v-model="withdraw_form.amount" type="number"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitWithdraw">Withdraw</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+            <el-container v-show="activeIndex === '2-1'">
+                <el-header>
+                    <span>Transfer</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="transfer_form" :model="transfer_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="transfer_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="password">
+                            <el-input v-model="transfer_form.password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item label="amount">
+                            <el-input v-model="transfer_form.amount" type="number"></el-input>
+                        </el-form-item>
+                        <el-form-item label="payee">
+                            <el-input v-model="transfer_form.payee"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitTransfer">Transfer</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+            <el-container v-show="activeIndex === '2-2'">
+                <el-header>
+                    <span>History</span>
+                </el-header>
+                <el-main>
+                    <el-form ref="history_form" :model="history_form" label-width="80px">
+                        <el-form-item label="username">
+                            <el-input v-model="history_form.username"></el-input>
+                        </el-form-item>
+                        <el-form-item label="password">
+                            <el-input v-model="history_form.password" show-password></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmitHistory">Confirm</el-button>
+                        </el-form-item>
+                    </el-form>
+                    <template>
+                        <el-table :data="history" border max-height="240" style="width: 100%">
+                            <el-table-column prop="type" label="type" width="300">
+                            </el-table-column>
+                            <el-table-column prop="amount" label="amount" width="300">
+                            </el-table-column>
+                            <el-table-column prop="time" label="time">
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                    <el-form :inline="true" label-width="80px" style="margin-top: 22px">
+                        <el-form-item label="income">
+                            <el-input v-model="income" readonly></el-input>
+                        </el-form-item>
+                        <el-form-item label="expenditure">
+                            <el-input v-model="expenditure" readonly></el-input>
+                        </el-form-item>
+                    </el-form>
+                </el-main>
+            </el-container>
+        </el-container>
+        <el-container>
+            <el-footer style="text-align: center">
+                <el-link href="//github.com/jyboy" target="_blank" type="info">&copy; jyboy</el-link>
+            </el-footer>
+        </el-container>
+    </div>
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="//unpkg.com/element-ui/lib/index.js"></script>
+    <script src="//unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    activeIndex: '1-1',
+                    register_form: {
+                        username: '',
+                        password: ''
+                    },
+                    balance_form: {
+                        username: '',
+                        password: ''
+                    },
+                    balance: 0,
+                    deposit_form: {
+                        username: '',
+                        amount: '0'
+                    },
+                    withdraw_form: {
+                        username: '',
+                        password: '',
+                        amount: '0'
+                    },
+                    transfer_form: {
+                        username: '',
+                        password: '',
+                        amount: '0',
+                        payee: ''
+                    },
+                    history_form: {
+                        username: '',
+                        password: ''
+                    },
+                    history: [],
+                    income: 0,
+                    expenditure: 0
+                }
+            },
+            methods: {
+                handleSelect(key) {
+                    this.activeIndex = key;
+                },
+                onSubmitRegister() {
+                    axios.post('/register', this.register_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            });
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                },
+                onSubmitBalance() {
+                    axios.post('/balance', this.balance_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.balance = res.data.balance;
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                },
+                onSubmitDeposit() {
+                    axios.post('/deposit', this.deposit_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            });
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                },
+                onSubmitWithdraw() {
+                    axios.post('/withdraw', this.withdraw_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            });
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                },
+                onSubmitTransfer() {
+                    axios.post('/transfer', this.transfer_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'success'
+                            });
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                },
+                onSubmitHistory() {
+                    axios.post('/history', this.history_form)
+                        .then(res => {
+                            if (res.data.code) {
+                                this.$message.error(res.data.msg);
+                                return;
+                            }
+                            this.history = res.data.history.map(val => {
+                                val.type = val.type === 1 ? 'expenditure' : 'income';
+                                return val;
+                            });
+                            this.income = res.data.income;
+                            this.expenditure = res.data.expenditure;
+                        })
+                        .catch(err => {
+                            this.$message.error(err);
+                        });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

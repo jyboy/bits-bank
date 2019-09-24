@@ -1,0 +1,28 @@
+{
+    "name": "bits-bank",
+    "description": "a mini net bank",
+    "version": "1.0.0",
+    "author": "jyboy",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:jyboy/bits-bank.git"
+    },
+    "homepage": "https://bits.atsjtu.cc",
+    "keywords": [
+        "node",
+        "express"
+    ],
+    "main": "./bin/www",
+    "scripts": {
+        "start": "node ./bin/www"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "ejs": "^2.7.1",
+        "express": "~4.16.1",
+        "http-errors": "~1.6.3",
+        "morgan": "~1.9.1",
+        "mysql": "^2.17.1"
+    }
+}
