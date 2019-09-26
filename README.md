@@ -14,6 +14,10 @@
 - Table: user, transfer
 
 ```sql
+CREATE DATABASE `bits` CHARACTER SET utf8;
+```
+
+```sql
 CREATE TABLE `user` (
   `username` varchar(128) NOT NULL DEFAULT '',
   `password` char(60) NOT NULL DEFAULT '',
