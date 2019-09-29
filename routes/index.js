@@ -267,17 +267,24 @@ router.post('/transfer', (req, res) => {
         });
         return;
     }
+    if (payee === username) {
+        res.send({
+            code: -5,
+            msg: 'payee same'
+        });
+        return;
+    }
     db.getUser(username, (err, data) => {
         if (err) {
             res.send({
-                code: -5,
+                code: -6,
                 msg: 'system busy'
             });
             return;
         }
         if (!data.length) {
             res.send({
-                code: -6,
+                code: -7,
                 msg: 'unregistered'
             });
             return;
@@ -286,14 +293,14 @@ router.post('/transfer', (req, res) => {
         bcrypt.compare(password, hash, (err, valid) => {
             if (!valid) {
                 res.send({
-                    code: -7,
+                    code: -8,
                     msg: 'password incorrect'
                 });
                 return;
             }
             if (balance < amount) {
                 res.send({
-                    code: -8,
+                    code: -9,
                     msg: 'balance not enough'
                 });
                 return;
@@ -301,14 +308,14 @@ router.post('/transfer', (req, res) => {
             db.getUser(payee, (err, data) => {
                 if (err) {
                     res.send({
-                        code: -9,
+                        code: -10,
                         msg: 'system busy'
                     });
                     return;
                 }
                 if (!data.length) {
                     res.send({
-                        code: -10,
+                        code: -11,
                         msg: 'payee unregistered'
                     });
                     return;
@@ -316,7 +323,7 @@ router.post('/transfer', (req, res) => {
                 db.transferMoney(username, amount, payee, err => {
                     if (err) {
                         res.send({
-                            code: -11,
+                            code: -12,
                             msg: 'system busy'
                         });
                         return;
@@ -324,7 +331,7 @@ router.post('/transfer', (req, res) => {
                     db.logTransfer(username, amount, payee, err => {
                         if (err) {
                             res.send({
-                                code: -12,
+                                code: -13,
                                 msg: 'system busy'
                             });
                             return;
