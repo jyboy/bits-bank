@@ -1,6 +1,6 @@
 # Bits Bank
 
-**Bits Bank** is a mini net bank. To preview online, please visit [bits.atsjtu.cc](https://bits.atsjtu.cc)
+**Bits Bank** is a mini net bank.
 
 ## Technologies
 
@@ -43,11 +43,11 @@ CREATE TABLE `transfer` (
 ```
 git clone git@github.com:jyboy/bits-bank.git
 cd bits-bank
-npm install
-npm start
+pnpm install
+pnpm start
 ```
 
-> **Note**: Before `npm start`, please confirm configuration in `config.js` first.
+> **Note**: Before `pnpm start`, please confirm configuration in `config.js` first.
 
 ## License
 

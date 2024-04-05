@@ -8,7 +8,6 @@
         "type": "git",
         "url": "git@github.com:jyboy/bits-bank.git"
     },
-    "homepage": "https://bits.atsjtu.cc",
     "keywords": [
         "node",
         "express"
@@ -19,10 +18,10 @@
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
-        "ejs": "^2.7.1",
-        "express": "~4.16.1",
-        "http-errors": "~1.6.3",
-        "morgan": "~1.9.1",
-        "mysql": "^2.17.1"
+        "ejs": "^3.1.9",
+        "express": "~4.19.2",
+        "http-errors": "~2.0.0",
+        "morgan": "~1.10.0",
+        "mysql": "^2.18.1"
     }
 }
